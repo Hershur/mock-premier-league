@@ -1,0 +1,42 @@
+{
+  "name": "mock-premier-league",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "tsc & node .",
+    "dev": "tsc -w & nodemon ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hershur/mock-premier-league.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Hershur/mock-premier-league/issues"
+  },
+  "homepage": "https://github.com/Hershur/mock-premier-league#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "joi": "^17.6.0",
+    "lodash": "^4.17.21",
+    "mongoose": "^6.2.2",
+    "reflect-metadata": "^0.1.13",
+    "typedi": "^0.10.0"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/express": "^4.17.13",
+    "@types/mongoose": "^5.11.97",
+    "@types/node": "^17.0.18",
+    "body-parser": "^1.19.2",
+    "celebrate": "^15.0.1",
+    "nodemon": "^2.0.15",
+    "typescript": "^4.5.5"
+  }
+}
