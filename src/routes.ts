@@ -1,18 +1,25 @@
 import express from 'express';
+import verifyToken from './middleware/auth';
+import adminRouter from './routes/admin.routes';
+import fixturesRouter from './routes/fixtures.routes';
+import teamsRouter from './routes/teams.routes';
 import usersRouter from './routes/users.routes';
-// import swaggerUI from 'swagger-ui-express';
-// import { readFile } from 'fs/promises';
-// const swaggerDocument = JSON.parse(await readFile(new URL('./swagger.json', import.meta.url)));
 
 const router = express.Router();
 
-// //Swagger documentation
-// router.use("/docs", swaggerUI.serve, (req, res)=> {
-//     let html = swaggerUI.generateHTML(swaggerDocument);
-//     res.send(html);
-// });
 
 router.use('/users', usersRouter);
+
+router.use('/admin', adminRouter);
+
+//Protected routes
+//JWT Authentication middleware
+router.use(verifyToken);
+
+router.use('/teams', teamsRouter);
+
+
+router.use('/fixtures', fixturesRouter);
 
 
 export default router;

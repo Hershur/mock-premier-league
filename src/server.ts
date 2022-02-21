@@ -1,23 +1,19 @@
 
 import express from 'express';
 import bodyParser from 'body-parser';
-import dotenv from 'dotenv';
 import { errors } from 'celebrate';
 import routes from './routes';
 import connectDB from './database/connection';
+import { PORT } from './config';
 
 const app = express();
-
-dotenv.config();
-
-const port = process.env.PORT || 3000;
 
 connectDB();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.set('port', port);
+app.set('port', PORT);
 
 app.get('/', (req, res, next) => {
 
@@ -29,4 +25,4 @@ app.use('/api', routes);
 
 app.use(errors());
 
-app.listen(port, () => console.log(`Running on port ${port}`));
+app.listen(PORT, () => console.log(`Running on port ${PORT}`));

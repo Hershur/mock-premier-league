@@ -1,4 +1,10 @@
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -9,36 +15,40 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteFixturesByIdService = exports.updateFixturesByIdService = exports.findFixturesByStatusService = exports.findFixtureByIdService = exports.findFixturessService = exports.createFixturesService = void 0;
+require("reflect-metadata");
+const typedi_1 = require("typedi");
 const fixtures_repo_1 = require("../repositories/fixtures.repo");
-const createFixturesService = (teamBody) => __awaiter(void 0, void 0, void 0, function* () {
-    const createFixtures = yield (0, fixtures_repo_1.createFixturesRepo)(teamBody);
-    return { success: true, data: createFixtures };
-});
-exports.createFixturesService = createFixturesService;
-const findFixturessService = () => __awaiter(void 0, void 0, void 0, function* () {
-    const findFixtures = yield (0, fixtures_repo_1.findFixturesRepo)();
-    return { success: true, data: findFixtures };
-});
-exports.findFixturessService = findFixturessService;
-const findFixtureByIdService = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const findFixture = yield (0, fixtures_repo_1.findFixturesByIdRepo)(id);
-    return { success: true, data: findFixture };
-});
-exports.findFixtureByIdService = findFixtureByIdService;
-const findFixturesByStatusService = (status) => __awaiter(void 0, void 0, void 0, function* () {
-    const findFixtures = yield (0, fixtures_repo_1.findFixturesByStatusRepo)(status);
-    return { success: true, data: findFixtures };
-});
-exports.findFixturesByStatusService = findFixturesByStatusService;
-const updateFixturesByIdService = (id, fixturesBody) => __awaiter(void 0, void 0, void 0, function* () {
-    const updateFixtures = yield (0, fixtures_repo_1.updateFixturesByIdRepo)(id, fixturesBody);
-    return updateFixtures;
-});
-exports.updateFixturesByIdService = updateFixturesByIdService;
-const deleteFixturesByIdService = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const deleteFixtures = yield (0, fixtures_repo_1.deleteFixturesByIdRepo)(id);
-    return deleteFixtures;
-});
-exports.deleteFixturesByIdService = deleteFixturesByIdService;
+let FixtureService = class FixtureService {
+    constructor() {
+        this.createFixturesService = (fixtureBody) => __awaiter(this, void 0, void 0, function* () {
+            const createFixtures = yield (0, fixtures_repo_1.createFixturesRepo)(fixtureBody);
+            return { success: true, data: createFixtures };
+        });
+        this.findFixturesService = () => __awaiter(this, void 0, void 0, function* () {
+            const findFixtures = yield (0, fixtures_repo_1.findFixturesRepo)();
+            return { success: true, data: findFixtures };
+        });
+        this.findFixtureByIdService = (id) => __awaiter(this, void 0, void 0, function* () {
+            const findFixture = yield (0, fixtures_repo_1.findFixturesByIdRepo)(id);
+            return { success: true, data: findFixture };
+        });
+        this.findFixturesByStatusService = (status) => __awaiter(this, void 0, void 0, function* () {
+            const findFixtures = yield (0, fixtures_repo_1.findFixturesByStatusRepo)(status);
+            console.log(findFixtures);
+            return { success: true, data: findFixtures };
+        });
+        this.updateFixturesByIdService = (id, fixturesBody) => __awaiter(this, void 0, void 0, function* () {
+            const updateFixtures = yield (0, fixtures_repo_1.updateFixturesByIdRepo)(id, fixturesBody);
+            return { success: true, data: updateFixtures };
+        });
+        this.deleteFixturesByIdService = (id) => __awaiter(this, void 0, void 0, function* () {
+            const deleteFixtures = yield (0, fixtures_repo_1.deleteFixturesByIdRepo)(id);
+            return { success: true };
+        });
+    }
+};
+FixtureService = __decorate([
+    (0, typedi_1.Service)()
+], FixtureService);
+exports.default = FixtureService;
 //# sourceMappingURL=fixtures.services.js.map

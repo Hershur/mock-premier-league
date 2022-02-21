@@ -18,18 +18,20 @@ const createFixturesRepo = (fixturesBody) => __awaiter(void 0, void 0, void 0, f
     const fixtures = new fixtures_model_1.default({
         homeTeam: fixturesBody.homeTeam,
         awayTeam: fixturesBody.awayTeam,
-        status: 'Pending',
+        status: 'pending',
         dateTime: fixturesBody.dateTime,
         venue: fixturesBody.venue,
         gameweek: fixturesBody.gameweek,
+        referee: fixturesBody.referee,
+        uniqueLink: fixturesBody.uniqueLink,
+        hashTag: fixturesBody.hashTag,
         createdOn: new Date().toLocaleString()
     });
-    const createFixtures = fixtures.save((err, fixture) => __awaiter(void 0, void 0, void 0, function* () {
-        const fixtureId = fixture._id;
-        const uniqueLink = `/api/fixtures/${fixtureId}`;
-        yield (0, exports.updateFixturesByIdRepo)(fixtureId, Object.assign(Object.assign({}, fixture), { uniqueLink }));
-    }));
-    return createFixtures;
+    const createFixtures = yield fixtures.save();
+    const fixtureId = createFixtures._id;
+    const uniqueLink = `/api/fixtures/${fixtureId}`;
+    const returnedFixture = yield (0, exports.updateFixturesByIdRepo)(fixtureId, Object.assign(Object.assign({}, fixturesBody), { uniqueLink }));
+    return returnedFixture;
 });
 exports.createFixturesRepo = createFixturesRepo;
 const findFixturesRepo = () => __awaiter(void 0, void 0, void 0, function* () {
@@ -43,7 +45,7 @@ const findFixturesByIdRepo = (id) => __awaiter(void 0, void 0, void 0, function*
 });
 exports.findFixturesByIdRepo = findFixturesByIdRepo;
 const findFixturesByStatusRepo = (status) => __awaiter(void 0, void 0, void 0, function* () {
-    const findFixtures = yield fixtures_model_1.default.find({ status }).exec();
+    const findFixtures = yield fixtures_model_1.default.find({ status: status }).exec();
     return findFixtures;
 });
 exports.findFixturesByStatusRepo = findFixturesByStatusRepo;

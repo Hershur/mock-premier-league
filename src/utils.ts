@@ -5,3 +5,5 @@ export const generateHashedPassword = (password: string): string => {
     const hashedPassword = bcrypt.hashSync(password, salt);
     return hashedPassword;
 }
+
+export const adminRoutes = ['create', 'edit', 'remove'];

@@ -31,6 +31,7 @@ export const fixturesSchema = new mongoose.Schema<IFixtures>({
         type: String,
         required: true
     },
+    uniqueLink: String,
     gameweek: String,
     hashTag: String,
 });

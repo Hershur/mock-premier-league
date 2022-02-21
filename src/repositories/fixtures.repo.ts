@@ -6,20 +6,24 @@ export const createFixturesRepo = async (fixturesBody: IFixtures)=> {
     const fixtures = new fixturesModel({
         homeTeam: fixturesBody.homeTeam,
         awayTeam: fixturesBody.awayTeam,
-        status: 'Pending',
+        status: 'pending',
         dateTime: fixturesBody.dateTime,
         venue: fixturesBody.venue,
         gameweek: fixturesBody.gameweek,
+        referee: fixturesBody.referee,
+        uniqueLink: fixturesBody.uniqueLink,
+        hashTag: fixturesBody.hashTag,
         createdOn: new Date().toLocaleString()
     });
     
-    const createFixtures = fixtures.save(async (err,fixture)=> {
-        const fixtureId = fixture._id;
-        const uniqueLink = `/api/fixtures/${fixtureId}`;
-        await updateFixturesByIdRepo(fixtureId, {...fixture, uniqueLink});
-    });
+    const createFixtures = await fixtures.save();
     
-    return createFixtures;
+    const fixtureId = createFixtures._id;
+    const uniqueLink = `/api/fixtures/${fixtureId}`;
+    const returnedFixture = await updateFixturesByIdRepo(fixtureId, {...fixturesBody, uniqueLink});
+    
+
+    return returnedFixture;
 };
 
 export const findFixturesRepo = async ()=> {
@@ -33,7 +37,7 @@ export const findFixturesByIdRepo = async (id: string)=> {
 };
 
 export const findFixturesByStatusRepo = async (status: string)=> {
-    const findFixtures = await fixturesModel.find({ status }).exec();
+    const findFixtures = await fixturesModel.find({ status: status }).exec();
     return findFixtures;
 };
 

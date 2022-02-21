@@ -1,7 +1,6 @@
 import express from 'express';
 import { celebrate, Joi } from 'celebrate';
 import UserController from '../controllers/users.controller';
-import { Container } from 'typedi';
 
 const usersRouter = express.Router();
 
@@ -30,7 +29,7 @@ usersRouter.post('/create',
                 }),
             password: Joi.string()
                 .trim()
-                .pattern(new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$/))
+                .pattern(new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!=_%&*?])[A-Za-z\d#$@!=_%&*?]{8,30}$/))
                 .required()
                 .example("passW@rd1")
                 .messages({
@@ -48,11 +47,20 @@ usersRouter.post('/create',
         }),
     }),
     async (req, res) => await UserController.createUser(req,res)
+)
+.post('/login',
+    celebrate({
+        body: Joi.object({
+            email: Joi.string()
+                .trim()
+                .required(),
+            password: Joi.string()
+                .trim()
+                .required()
+        })
+    }),
+    async (req, res) => await UserController.loginUser(req, res)
 );
-
-
-
-
 
 
 

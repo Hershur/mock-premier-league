@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findUserByEmail = exports.createUserAccountRepo = void 0;
+exports.findUserByEmail = exports.loginUserRepo = exports.createUserAccountRepo = void 0;
 const users_model_1 = __importDefault(require("../models/users.model"));
 const createUserAccountRepo = (userBody) => __awaiter(void 0, void 0, void 0, function* () {
     const user = new users_model_1.default({
@@ -22,9 +22,15 @@ const createUserAccountRepo = (userBody) => __awaiter(void 0, void 0, void 0, fu
         createdOn: new Date().toLocaleString()
     });
     const createUser = yield user.save();
-    return createUser;
+    const { name, email, createdOn } = createUser;
+    return { name, email, createdOn };
 });
 exports.createUserAccountRepo = createUserAccountRepo;
+const loginUserRepo = (loginBody) => __awaiter(void 0, void 0, void 0, function* () {
+    const checkUserExists = yield users_model_1.default.findOne({ email: loginBody.email });
+    return checkUserExists ? checkUserExists : null;
+});
+exports.loginUserRepo = loginUserRepo;
 const findUserByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
     const findUser = yield users_model_1.default.findOne({ email: email }).exec();
     return findUser;

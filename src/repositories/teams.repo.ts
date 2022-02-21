@@ -32,7 +32,7 @@ export const findTeamByNameAndAbbr = async (teamBody: ITeam)=> {
 };
 
 export const updateTeamByIdRepo = async (id: string, teamBody: ITeam)=> {
-    const updateTeam = await teamsModel.findByIdAndUpdate(id, teamBody);
+    const updateTeam = await teamsModel.findByIdAndUpdate(id, teamBody).exec();
     return updateTeam;
 };
 

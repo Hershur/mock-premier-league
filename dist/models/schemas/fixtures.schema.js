@@ -34,6 +34,7 @@ exports.fixturesSchema = new mongoose_1.default.Schema({
         type: String,
         required: true
     },
+    uniqueLink: String,
     gameweek: String,
     hashTag: String,
 });

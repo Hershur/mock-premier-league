@@ -1,5 +1,6 @@
-import adminModel from "../models/admin.model";
 import { IAdmin } from "../interfaces/admin.interface";
+import adminModel from "../models/admin.model";
+import { ILogin } from "../interfaces/login.interface";
 
 export const createAdminAccountRepo = async (adminBody: IAdmin)=> {
 
@@ -12,7 +13,14 @@ export const createAdminAccountRepo = async (adminBody: IAdmin)=> {
     
     const createAdmin = await admin.save();
   
-    return createAdmin;
+    const { name, email, createdOn} = createAdmin;
+    return { name, email, createdOn};
+};
+
+
+export const loginAdminRepo = async (loginBody: ILogin)=> {
+    const checkAdminExists = await adminModel.findOne({ email: loginBody.email});
+    return checkAdminExists ? checkAdminExists : null;
 };
 
 

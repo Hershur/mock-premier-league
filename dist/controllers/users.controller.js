@@ -49,12 +49,22 @@ let UserController = class UserController {
             try {
                 const userDTO = req.body;
                 const createUser = yield this._userService.createUserAccountService(userDTO);
-                res.statusCode = 200;
-                return res.json(createUser);
+                return res.status(201).json(createUser);
             }
             catch (error) {
-                res.statusCode = 500;
-                return res.json({ success: false, message: error.message });
+                return res.status(500).json({ success: false, message: "An error occurred" });
+            }
+        });
+    }
+    loginUser(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const loginDTO = req.body;
+                const loginUser = yield this._userService.loginUserService(loginDTO);
+                return res.status(200).json(loginUser);
+            }
+            catch (error) {
+                return res.status(500).json({ success: false, message: "Incorrect username or password" });
             }
         });
     }

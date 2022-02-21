@@ -38,7 +38,7 @@ usersRouter.post('/create', (0, celebrate_1.celebrate)({
         }),
         password: celebrate_1.Joi.string()
             .trim()
-            .pattern(new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$/))
+            .pattern(new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!=_%&*?])[A-Za-z\d#$@!=_%&*?]{8,30}$/))
             .required()
             .example("passW@rd1")
             .messages({
@@ -54,6 +54,16 @@ usersRouter.post('/create', (0, celebrate_1.celebrate)({
             "string.empty": "confirm password is required.",
         }),
     }),
-}), (req, res) => __awaiter(void 0, void 0, void 0, function* () { return yield users_controller_1.default.createUser(req, res); }));
+}), (req, res) => __awaiter(void 0, void 0, void 0, function* () { return yield users_controller_1.default.createUser(req, res); }))
+    .post('/login', (0, celebrate_1.celebrate)({
+    body: celebrate_1.Joi.object({
+        email: celebrate_1.Joi.string()
+            .trim()
+            .required(),
+        password: celebrate_1.Joi.string()
+            .trim()
+            .required()
+    })
+}), (req, res) => __awaiter(void 0, void 0, void 0, function* () { return yield users_controller_1.default.loginUser(req, res); }));
 exports.default = usersRouter;
 //# sourceMappingURL=users.routes.js.map

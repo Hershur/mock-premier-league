@@ -14,17 +14,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 require("reflect-metadata");
 const typedi_1 = require("typedi");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const utils_1 = require("../utils");
 const users_repo_1 = require("../repositories/users.repo");
+const config_1 = require("../config");
 let UserAccountService = class UserAccountService {
     constructor() {
         this.createUserAccountService = (userBody) => __awaiter(this, void 0, void 0, function* () {
             //Check if user exists
             const checkUser = yield (0, users_repo_1.findUserByEmail)(userBody.email);
-            console.log("checkUser", checkUser);
             if (checkUser) {
                 return { success: false, message: "User already exists" };
             }
@@ -33,6 +38,23 @@ let UserAccountService = class UserAccountService {
             const user = Object.assign(Object.assign({}, userBody), { hashedPassword });
             const createUser = yield (0, users_repo_1.createUserAccountRepo)(user);
             return { success: true, data: createUser };
+        });
+        this.loginUserService = (loginBody) => __awaiter(this, void 0, void 0, function* () {
+            const userLogin = yield (0, users_repo_1.loginUserRepo)(loginBody);
+            const checkPassword = bcrypt_1.default.compareSync(loginBody.password, userLogin.password);
+            if (!checkPassword)
+                return { success: false, message: "Incorrect username or password" };
+            const token = jsonwebtoken_1.default.sign({ user_id: userLogin._id, email: userLogin.email }, config_1.TOKEN_KEY, {
+                expiresIn: 60 * config_1.TOKEN_EXPIRY,
+            });
+            const retrievedLogin = {
+                _id: userLogin._id,
+                email: userLogin.email,
+                name: userLogin.name,
+                created: userLogin.createdOn,
+                token: token
+            };
+            return { success: true, data: retrievedLogin };
         });
     }
 };

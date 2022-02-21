@@ -42,7 +42,7 @@ const findTeamByNameAndAbbr = (teamBody) => __awaiter(void 0, void 0, void 0, fu
 });
 exports.findTeamByNameAndAbbr = findTeamByNameAndAbbr;
 const updateTeamByIdRepo = (id, teamBody) => __awaiter(void 0, void 0, void 0, function* () {
-    const updateTeam = yield teams_models_1.default.findByIdAndUpdate(id, teamBody);
+    const updateTeam = yield teams_models_1.default.findByIdAndUpdate(id, teamBody).exec();
     return updateTeam;
 });
 exports.updateTeamByIdRepo = updateTeamByIdRepo;

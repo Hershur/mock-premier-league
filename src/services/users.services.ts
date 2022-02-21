@@ -1,9 +1,13 @@
 import 'reflect-metadata';
 import { Service } from "typedi";
+import jwt from "jsonwebtoken";
+import bcrypt from 'bcrypt';
 import { generateHashedPassword } from "../utils";
 import { IUser } from "../interfaces/users.interface";
-import { createUserAccountRepo, findUserByEmail } from "../repositories/users.repo";
+import { createUserAccountRepo, findUserByEmail, loginUserRepo } from "../repositories/users.repo";
 import { ServiceResponse } from "../types/response.type";
+import { ILogin } from '../interfaces/login.interface';
+import { TOKEN_EXPIRY, TOKEN_KEY } from '../config';
 
 @Service()
 export default class UserAccountService {
@@ -12,7 +16,6 @@ export default class UserAccountService {
         //Check if user exists
         const checkUser = await findUserByEmail(userBody.email); 
         
-        console.log("checkUser", checkUser);
         if(checkUser){
             return {success: false, message: "User already exists"};
         }
@@ -23,6 +26,33 @@ export default class UserAccountService {
     
         const createUser = await createUserAccountRepo(user);
         return {success: true, data: createUser};
+    }
+
+
+    loginUserService = async (loginBody: ILogin): Promise<ServiceResponse>=> {
+        const userLogin = await loginUserRepo(loginBody);
+        const checkPassword =  bcrypt.compareSync(loginBody.password, userLogin.password);
+
+        if(!checkPassword) return {success: false, message: "Incorrect username or password"};
+
+        
+        const token = jwt.sign(
+            { user_id: userLogin._id, email: userLogin.email},
+            TOKEN_KEY,
+            {
+                expiresIn: 60*TOKEN_EXPIRY,
+            }
+        );
+    
+        const retrievedLogin = {
+            _id: userLogin._id,
+            email: userLogin.email,
+            name: userLogin.name,
+            created: userLogin.createdOn,
+            token: token
+        };
+        
+        return {success: true, data: retrievedLogin};
     }
 }
 

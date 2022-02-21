@@ -1,5 +1,6 @@
 import userModel from "../models/users.model";
 import { IUser } from "../interfaces/users.interface";
+import { ILogin } from '../interfaces/login.interface';
 
 export const createUserAccountRepo = async (userBody: IUser)=> {
 
@@ -12,7 +13,16 @@ export const createUserAccountRepo = async (userBody: IUser)=> {
     
     const createUser = await user.save();
   
-    return createUser;
+    const { name, email, createdOn} = createUser;
+    return { name, email, createdOn};
+};
+
+export const loginUserRepo = async (loginBody: ILogin)=> {
+    
+    const checkUserExists = await userModel.findOne({ email: loginBody.email});
+
+    return checkUserExists ? checkUserExists : null;
+
 };
 
 

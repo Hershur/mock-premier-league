@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findAdminByEmail = exports.createAdminAccountRepo = void 0;
+exports.findAdminByEmail = exports.loginAdminRepo = exports.createAdminAccountRepo = void 0;
 const admin_model_1 = __importDefault(require("../models/admin.model"));
 const createAdminAccountRepo = (adminBody) => __awaiter(void 0, void 0, void 0, function* () {
     const admin = new admin_model_1.default({
@@ -22,9 +22,15 @@ const createAdminAccountRepo = (adminBody) => __awaiter(void 0, void 0, void 0, 
         createdOn: new Date().toLocaleString()
     });
     const createAdmin = yield admin.save();
-    return createAdmin;
+    const { name, email, createdOn } = createAdmin;
+    return { name, email, createdOn };
 });
 exports.createAdminAccountRepo = createAdminAccountRepo;
+const loginAdminRepo = (loginBody) => __awaiter(void 0, void 0, void 0, function* () {
+    const checkAdminExists = yield admin_model_1.default.findOne({ email: loginBody.email });
+    return checkAdminExists ? checkAdminExists : null;
+});
+exports.loginAdminRepo = loginAdminRepo;
 const findAdminByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
     const findAdmin = yield admin_model_1.default.findOne({ email: email }).exec();
     return findAdmin;
