@@ -8,6 +8,7 @@ import { IAdmin } from '../interfaces/admin.interface';
 import { createAdminAccountRepo, findAdminByEmail, loginAdminRepo } from '../repositories/admin.repo';
 import { ILogin } from '../interfaces/login.interface';
 import { TOKEN_KEY, TOKEN_EXPIRY } from '../config';
+import { redisClient } from '../database/redisConnection';
 
 @Service()
 export default class AdminAccountService {
@@ -48,8 +49,10 @@ export default class AdminAccountService {
             email: adminLogin.email,
             name: adminLogin.name,
             created: adminLogin.createdOn,
-            token: token
         };
+
+        redisClient.set(retrievedLogin.email, token);
+
         
         return {success: true, data: retrievedLogin};
     }

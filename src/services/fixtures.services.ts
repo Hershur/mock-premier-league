@@ -32,7 +32,6 @@ export default class FixtureService {
     
     findFixturesByStatusService = async (status: string)=> {
         const findFixtures = await findFixturesByStatusRepo(status);
-        console.log(findFixtures);
         return {success: true, data: findFixtures};
     };
     

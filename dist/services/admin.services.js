@@ -25,6 +25,7 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const utils_1 = require("../utils");
 const admin_repo_1 = require("../repositories/admin.repo");
 const config_1 = require("../config");
+const redisConnection_1 = require("../database/redisConnection");
 let AdminAccountService = class AdminAccountService {
     constructor() {
         this.createAdminAccountService = (adminBody) => __awaiter(this, void 0, void 0, function* () {
@@ -52,8 +53,8 @@ let AdminAccountService = class AdminAccountService {
                 email: adminLogin.email,
                 name: adminLogin.name,
                 created: adminLogin.createdOn,
-                token: token
             };
+            redisConnection_1.redisClient.set(retrievedLogin.email, token);
             return { success: true, data: retrievedLogin };
         });
         // checkAdminService = async (adminLogin: ILogin)=> {

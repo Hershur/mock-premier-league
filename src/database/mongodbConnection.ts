@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import { MONGO_URI } from '../config';
 
 
-const connectDB = async ()=> {
+const connectMongoDB = async ()=> {
 
     // handle error at the point of connection
     try {
@@ -25,4 +25,4 @@ const connectDB = async ()=> {
 };
 
 
-export default connectDB;
+export default connectMongoDB;

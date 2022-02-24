@@ -20,6 +20,7 @@ usersRouter.post('/create',
                 }),
             email: Joi.string()
                 .email()
+                .lowercase()
                 .trim()
                 .required()
                 .example("user@example.com")

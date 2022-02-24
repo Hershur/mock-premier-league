@@ -1,0 +1,278 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Mock Premier League API",
+        "description": "A simple RESTful API that provides a service that allows admin, users register and login. Users can view teams various fixtures (pending or completed)"
+    },
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "tags": [
+        {
+            "name": "Users",
+            "description": "Users endpoints"
+        },
+        {
+            "name": "Admin",
+            "description": "Admin endpoints"
+        },
+        {
+            "name": "Teams",
+            "description": "Teams endpoints"
+        },
+        {
+            "name": "Fixtures",
+            "description": "Fixtures endpoints"
+        }
+    ],
+    "paths": {
+        "/api/users/login": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Login user",
+                "requestBody": {
+                    "description": "The route should accept JSON data containing login details",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/definitions/LoginData"
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User logged in successfully and token generated"
+                    },
+                    "400": {
+                        "description": "User does not exists or invalid token"
+                    }
+                }
+            }
+        },
+        "/api/users/create-account": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Create user account",
+                "requestBody": {
+                    "description": "The route should accept JSON data containing user details",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/definitions/UserData"
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User account is created successfully and token generated"
+                    },
+                    "400": {
+                        "description": "User details are invalid"
+                    }
+                }
+            }
+        },
+        "/": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Welcome message",
+                "responses": {
+                    "200": {
+                        "description": "A successful response, 'Welcome to express server' displayed"
+                    }
+                }
+            }
+        },
+        "/api/users": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get all users",
+                "responses": {
+                    "200": {
+                        "description": "A successful response, all users displayed"
+                    }
+                }
+            }
+        },
+        "/api/users/{id}": {
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID of user",
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get a specific user",
+                "responses": {
+                    "200": {
+                        "description": "User details is displayed"
+                    },
+                    "400": {
+                        "description": "User does not exists"
+                    }
+                }
+            }
+        },
+        "/api/users/{id}/update": {
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID of user",
+                    "type": "string"
+                }
+            ],
+            "put": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Update user details",
+                "requestBody": {
+                    "description": "The route should accept JSON data containing user details to update",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/definitions/UserData"
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User details is updated successfully"
+                    },
+                    "400": {
+                        "description": "User details are invalid"
+                    }
+                }
+            }
+        },
+        "/api/users/{id}/delete": {
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID of user",
+                    "type": "string"
+                }
+            ],
+            "delete": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Delete a specific user",
+                "responses": {
+                    "204": {
+                        "description": "User deleted successfully"
+                    },
+                    "400": {
+                        "description": "User does not exists"
+                    }
+                }
+            }
+        }
+    },
+    "components": {        
+        "securitySchemes": {
+          "bearerAuth": {
+            "type": "http",
+            "scheme": "bearer",
+            "bearerFormat": "JWT"
+          }
+        }
+    },
+    "definitions": {
+        "UserData": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "assurancefemi@gmail.com"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "password1"
+                },
+                "confirmPassword": {
+                    "type": "string",
+                    "example": "password1"
+                }
+            },
+            "description": "User details"
+        },
+        "LoginData": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "assurancefemi@gmail.com"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "password1"
+                }
+            },
+            "description": "Login details"
+        }
+    }
+      
+}

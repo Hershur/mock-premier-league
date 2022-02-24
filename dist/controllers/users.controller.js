@@ -43,6 +43,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 require("reflect-metadata");
 const users_services_1 = __importDefault(require("../services/users.services"));
 const typedi_1 = __importStar(require("typedi"));
+const config_1 = require("../config");
 let UserController = class UserController {
     createUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -61,10 +62,16 @@ let UserController = class UserController {
             try {
                 const loginDTO = req.body;
                 const loginUser = yield this._userService.loginUserService(loginDTO);
+                res.cookie("userEmail", loginUser.data.email);
                 return res.status(200).json(loginUser);
             }
             catch (error) {
-                return res.status(500).json({ success: false, message: "Incorrect username or password" });
+                req.session.destroy((error) => {
+                    if (error)
+                        return res.status(500).json({ message: 'Internal Server Error' });
+                    res.clearCookie(config_1.SESSION_NAME);
+                });
+                return res.status(401).json({ success: false, message: "Incorrect username or password" });
             }
         });
     }

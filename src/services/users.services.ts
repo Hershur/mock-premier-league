@@ -8,6 +8,7 @@ import { createUserAccountRepo, findUserByEmail, loginUserRepo } from "../reposi
 import { ServiceResponse } from "../types/response.type";
 import { ILogin } from '../interfaces/login.interface';
 import { TOKEN_EXPIRY, TOKEN_KEY } from '../config';
+import { redisClient } from '../database/redisConnection';
 
 @Service()
 export default class UserAccountService {
@@ -48,9 +49,12 @@ export default class UserAccountService {
             _id: userLogin._id,
             email: userLogin.email,
             name: userLogin.name,
-            created: userLogin.createdOn,
-            token: token
+            created: userLogin.createdOn
         };
+
+        // Set logged in user token 
+        redisClient.set(retrievedLogin.email, token);
+
         
         return {success: true, data: retrievedLogin};
     }

@@ -34,7 +34,6 @@ let FixtureService = class FixtureService {
         });
         this.findFixturesByStatusService = (status) => __awaiter(this, void 0, void 0, function* () {
             const findFixtures = yield (0, fixtures_repo_1.findFixturesByStatusRepo)(status);
-            console.log(findFixtures);
             return { success: true, data: findFixtures };
         });
         this.updateFixturesByIdService = (id, fixturesBody) => __awaiter(this, void 0, void 0, function* () {

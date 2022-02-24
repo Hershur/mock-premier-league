@@ -25,6 +25,7 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const utils_1 = require("../utils");
 const users_repo_1 = require("../repositories/users.repo");
 const config_1 = require("../config");
+const redisConnection_1 = require("../database/redisConnection");
 let UserAccountService = class UserAccountService {
     constructor() {
         this.createUserAccountService = (userBody) => __awaiter(this, void 0, void 0, function* () {
@@ -51,9 +52,10 @@ let UserAccountService = class UserAccountService {
                 _id: userLogin._id,
                 email: userLogin.email,
                 name: userLogin.name,
-                created: userLogin.createdOn,
-                token: token
+                created: userLogin.createdOn
             };
+            // Set logged in user token 
+            redisConnection_1.redisClient.set(retrievedLogin.email, token);
             return { success: true, data: retrievedLogin };
         });
     }

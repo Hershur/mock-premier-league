@@ -29,6 +29,7 @@ adminRouter.post('/create', (0, celebrate_1.celebrate)({
         }),
         email: celebrate_1.Joi.string()
             .email()
+            .lowercase()
             .trim()
             .required()
             .example("user@example.com")

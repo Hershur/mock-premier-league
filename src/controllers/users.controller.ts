@@ -4,6 +4,8 @@ import UserAccountService from '../services/users.services';
 import Container, { Service, Inject } from 'typedi';
 import { IUser } from '../interfaces/users.interface';
 import { ILogin } from '../interfaces/login.interface';
+import { SessionWithUser } from '../types/session.type';
+import { SESSION_NAME } from '../config';
 
 @Service()
 class UserController {
@@ -27,10 +29,14 @@ class UserController {
             const loginDTO = req.body as unknown as ILogin;
             const loginUser = await this._userService.loginUserService(loginDTO);
             
-
+            res.cookie("userEmail", loginUser.data.email);
             return res.status(200).json(loginUser);
         } catch (error) {
-            return res.status(500).json({success: false, message: "Incorrect username or password"});
+            req.session.destroy((error: Error)=> {
+                if(error) return res.status(500).json({message: 'Internal Server Error'});
+                res.clearCookie(SESSION_NAME);
+            });
+            return res.status(401).json({success: false, message: "Incorrect username or password"});
 
         }
     }
