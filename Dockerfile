@@ -19,6 +19,9 @@ RUN npm run build
 
 COPY .env ./dist/
 
+COPY swagger.json ./dist/
+
+
 WORKDIR ./dist
 
 EXPOSE 5000

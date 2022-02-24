@@ -12,13 +12,14 @@ const users_routes_1 = __importDefault(require("./routes/users.routes"));
 const swaggerUi = require("swagger-ui-express");
 const fs = require("fs");
 /* Swagger files start */
-const swaggerFile = (process.cwd() + "/src/swagger/swagger.json");
+const swaggerFile = (process.cwd() + "/swagger.json");
 const swaggerData = fs.readFileSync(swaggerFile, 'utf8');
-const customCss = fs.readFileSync((process.cwd() + "/src/swagger/swagger.css"), 'utf8');
+// const customCss = fs.readFileSync((process.cwd()+"/swagger/swagger.css"), 'utf8');
 const swaggerDocument = JSON.parse(swaggerData);
 /* Swagger files end */
+console.log(process.cwd());
 const router = express_1.default.Router();
-router.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, null, null, customCss));
+router.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, null, null));
 router.use('/users', users_routes_1.default);
 router.use('/admin', admin_routes_1.default);
 //Protected routes

@@ -9,16 +9,17 @@ import fs = require('fs');
 
 
 /* Swagger files start */
-// const swaggerFile = (process.cwd()+"/src/swagger/swagger.json");
-// const swaggerData = fs.readFileSync(swaggerFile, 'utf8');
-// const customCss = fs.readFileSync((process.cwd()+"/src/swagger/swagger.css"), 'utf8');
-// const swaggerDocument = JSON.parse(swaggerData);
+const swaggerFile = (process.cwd()+"/swagger.json");
+const swaggerData = fs.readFileSync(swaggerFile, 'utf8');
+// const customCss = fs.readFileSync((process.cwd()+"/swagger/swagger.css"), 'utf8');
+const swaggerDocument = JSON.parse(swaggerData);
 /* Swagger files end */
+console.log(process.cwd());
 
 const router = express.Router();
 
 
-// router.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, null, null, customCss));
+router.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, null, null));
 
 router.use('/users', usersRouter);
 
