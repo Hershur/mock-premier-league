@@ -32,10 +32,14 @@ class UserController {
             res.cookie("userEmail", loginUser.data.email, cookieOptions);
             return res.status(200).json(loginUser);
         } catch (error) {
-            req.session.destroy((error: Error)=> {
-                if(error) return res.status(500).json({message: 'Internal Server Error'});
-                res.clearCookie(SESSION_NAME);
-            });
+            console.log(error);
+            
+            if(req.session){
+                req.session.destroy((error: Error)=> {
+                    if(error) return res.status(500).json({message: 'Internal Server Error'});
+                    res.clearCookie(SESSION_NAME);
+                });
+            }
             return res.status(401).json({success: false, message: "Incorrect username or password"});
 
         }

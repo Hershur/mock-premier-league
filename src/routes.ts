@@ -15,7 +15,6 @@ const swaggerData = fs.readFileSync(swaggerFile, 'utf8');
 const swaggerDocument = JSON.parse(swaggerData);
 /* Swagger files end */
 
-
 const router = express.Router();
 
 

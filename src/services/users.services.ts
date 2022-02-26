@@ -13,7 +13,7 @@ import { redisClient } from '../database/redisConnection';
 @Service()
 export default class UserAccountService {
     
-    createUserAccountService = async (userBody: IUser): Promise<ServiceResponse>=> {
+    async createUserAccountService(userBody: IUser): Promise<ServiceResponse> {
         //Check if user exists
         const checkUser = await findUserByEmail(userBody.email); 
         
@@ -30,7 +30,7 @@ export default class UserAccountService {
     }
 
 
-    loginUserService = async (loginBody: ILogin): Promise<ServiceResponse>=> {
+    async loginUserService(loginBody: ILogin): Promise<ServiceResponse> {
         const userLogin = await loginUserRepo(loginBody);
         const checkPassword =  bcrypt.compareSync(loginBody.password, userLogin.password);
 
@@ -53,7 +53,11 @@ export default class UserAccountService {
         };
 
         // Set logged in user token 
-        redisClient.set(retrievedLogin.email, token);
+        redisClient.set(retrievedLogin.email, token, function (err, result) {
+            if(err) console.log(err);
+        });
+                redisClient.quit();
+
 
         
         return {success: true, data: retrievedLogin};

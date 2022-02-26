@@ -14,33 +14,33 @@ import {
 @Service()
 export default class FixtureService {
 
-    createFixturesService = async (fixtureBody: IFixtures)=> {
+     async createFixturesService (fixtureBody: IFixtures) {
     
         const createFixtures = await createFixturesRepo(fixtureBody);
         return {success: true, data: createFixtures};
     };
     
-    findFixturesService = async ()=> {
+     async findFixturesService() {
         const findFixtures = await findFixturesRepo();
         return {success: true, data: findFixtures};
     };
     
-    findFixtureByIdService = async (id: string)=> {
+    async findFixtureByIdService (id: string){
         const findFixture = await findFixturesByIdRepo(id);
         return {success: true, data: findFixture};
     };
     
-    findFixturesByStatusService = async (status: string)=> {
+    async findFixturesByStatusService(status: string){
         const findFixtures = await findFixturesByStatusRepo(status);
         return {success: true, data: findFixtures};
     };
     
-    updateFixturesByIdService = async (id: string, fixturesBody: IFixtures)=> {
+    async updateFixturesByIdService(id: string, fixturesBody: IFixtures) {
         const updateFixtures = await updateFixturesByIdRepo(id, fixturesBody);
         return {success: true, data: updateFixtures};
     };
     
-    deleteFixturesByIdService = async (id: string)=> {
+    async deleteFixturesByIdService(id: string) {
         const deleteFixtures = await deleteFixturesByIdRepo(id);
         return {success: true};
     };

@@ -13,7 +13,7 @@ import { redisClient } from '../database/redisConnection';
 @Service()
 export default class AdminAccountService {
     
-    createAdminAccountService = async (adminBody: IAdmin): Promise<ServiceResponse>=> {
+    async createAdminAccountService (adminBody: IAdmin): Promise<ServiceResponse> {
         //Check if admin exists
         const checkAdmin = await findAdminByEmail(adminBody.email); 
     
@@ -29,7 +29,7 @@ export default class AdminAccountService {
         return {success: true, data: createAdmin};
     }
 
-    loginAdminService = async (loginBody: ILogin): Promise<ServiceResponse>=> {
+    async loginAdminService (loginBody: ILogin): Promise<ServiceResponse>{
         const adminLogin = await loginAdminRepo(loginBody);
         const checkPassword =  bcrypt.compareSync(loginBody.password, adminLogin.password);
 
@@ -51,7 +51,10 @@ export default class AdminAccountService {
             created: adminLogin.createdOn,
         };
 
-        redisClient.set(retrievedLogin.email, token);
+        redisClient.set(retrievedLogin.email, token, function (err, result) {
+            if(err) console.log(err);
+        });
+        redisClient.quit();
 
         
         return {success: true, data: retrievedLogin};
