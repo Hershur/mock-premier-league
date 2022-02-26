@@ -29,7 +29,9 @@ class UserController {
             const loginDTO = req.body as unknown as ILogin;
             const loginUser = await this._userService.loginUserService(loginDTO);
             
-            res.cookie("userEmail", loginUser.data.email, cookieOptions);
+            if(loginUser.data){
+                res.cookie("userEmail", loginUser.data.email, cookieOptions);
+            }
             return res.status(200).json(loginUser);
         } catch (error) {
             console.log(error);

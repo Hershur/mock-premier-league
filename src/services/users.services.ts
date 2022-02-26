@@ -56,7 +56,7 @@ export default class UserAccountService {
         redisClient.set(retrievedLogin.email, token, function (err, result) {
             if(err) console.log(err);
         });
-                redisClient.quit();
+                
 
 
         

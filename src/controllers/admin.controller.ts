@@ -28,7 +28,9 @@ class AdminController {
             const loginDTO = req.body as unknown as ILogin;
             const loginAdmin = await this._adminService.loginAdminService(loginDTO);
             
-            res.cookie("userEmail", loginAdmin.data.email, cookieOptions);
+            if(loginAdmin.data){
+                res.cookie("userEmail", loginAdmin.data.email, cookieOptions);
+            }
             return res.status(200).json(loginAdmin);
         } catch (error) {
             return res.status(500).json({success: false, message: "Incorrect username or password"});

@@ -27,8 +27,8 @@ const admin_repo_1 = require("../repositories/admin.repo");
 const config_1 = require("../config");
 const redisConnection_1 = require("../database/redisConnection");
 let AdminAccountService = class AdminAccountService {
-    constructor() {
-        this.createAdminAccountService = (adminBody) => __awaiter(this, void 0, void 0, function* () {
+    createAdminAccountService(adminBody) {
+        return __awaiter(this, void 0, void 0, function* () {
             //Check if admin exists
             const checkAdmin = yield (0, admin_repo_1.findAdminByEmail)(adminBody.email);
             if (checkAdmin) {
@@ -40,7 +40,9 @@ let AdminAccountService = class AdminAccountService {
             const createAdmin = yield (0, admin_repo_1.createAdminAccountRepo)(admin);
             return { success: true, data: createAdmin };
         });
-        this.loginAdminService = (loginBody) => __awaiter(this, void 0, void 0, function* () {
+    }
+    loginAdminService(loginBody) {
+        return __awaiter(this, void 0, void 0, function* () {
             const adminLogin = yield (0, admin_repo_1.loginAdminRepo)(loginBody);
             const checkPassword = bcrypt_1.default.compareSync(loginBody.password, adminLogin.password);
             if (!checkPassword)
@@ -54,13 +56,12 @@ let AdminAccountService = class AdminAccountService {
                 name: adminLogin.name,
                 created: adminLogin.createdOn,
             };
-            redisConnection_1.redisClient.set(retrievedLogin.email, token);
+            redisConnection_1.redisClient.set(retrievedLogin.email, token, function (err, result) {
+                if (err)
+                    console.log(err);
+            });
             return { success: true, data: retrievedLogin };
         });
-        // checkAdminService = async (adminLogin: ILogin)=> {
-        //     const checkAdmin = await this.loginAdminService(adminLogin);
-        //     return checkAdmin.success;
-        // }
     }
 };
 AdminAccountService = __decorate([

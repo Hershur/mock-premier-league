@@ -27,8 +27,8 @@ const users_repo_1 = require("../repositories/users.repo");
 const config_1 = require("../config");
 const redisConnection_1 = require("../database/redisConnection");
 let UserAccountService = class UserAccountService {
-    constructor() {
-        this.createUserAccountService = (userBody) => __awaiter(this, void 0, void 0, function* () {
+    createUserAccountService(userBody) {
+        return __awaiter(this, void 0, void 0, function* () {
             //Check if user exists
             const checkUser = yield (0, users_repo_1.findUserByEmail)(userBody.email);
             if (checkUser) {
@@ -40,7 +40,9 @@ let UserAccountService = class UserAccountService {
             const createUser = yield (0, users_repo_1.createUserAccountRepo)(user);
             return { success: true, data: createUser };
         });
-        this.loginUserService = (loginBody) => __awaiter(this, void 0, void 0, function* () {
+    }
+    loginUserService(loginBody) {
+        return __awaiter(this, void 0, void 0, function* () {
             const userLogin = yield (0, users_repo_1.loginUserRepo)(loginBody);
             const checkPassword = bcrypt_1.default.compareSync(loginBody.password, userLogin.password);
             if (!checkPassword)
@@ -55,7 +57,10 @@ let UserAccountService = class UserAccountService {
                 created: userLogin.createdOn
             };
             // Set logged in user token 
-            redisConnection_1.redisClient.set(retrievedLogin.email, token);
+            redisConnection_1.redisClient.set(retrievedLogin.email, token, function (err, result) {
+                if (err)
+                    console.log(err);
+            });
             return { success: true, data: retrievedLogin };
         });
     }

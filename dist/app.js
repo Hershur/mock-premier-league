@@ -14,12 +14,10 @@ app.use((0, cookie_parser_1.default)(config_1.COOKIE_SECRET));
 app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: false }));
 app.get('/', (req, res, next) => {
-    console.log(req.session);
     return res.status(200).json({ message: 'Hello, welcome to my express server 💥' });
 });
 app.use('/api', routes_1.default);
 app.use((err, req, res, next) => {
-    console.error(err);
     res.status(500).send('Internal server error');
 });
 app.use((0, celebrate_1.errors)());

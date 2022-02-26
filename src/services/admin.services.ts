@@ -54,7 +54,7 @@ export default class AdminAccountService {
         redisClient.set(retrievedLogin.email, token, function (err, result) {
             if(err) console.log(err);
         });
-        redisClient.quit();
+        
 
         
         return {success: true, data: retrievedLogin};

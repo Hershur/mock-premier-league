@@ -19,8 +19,8 @@ require("reflect-metadata");
 const typedi_1 = require("typedi");
 const teams_repo_1 = require("../repositories/teams.repo");
 let TeamService = class TeamService {
-    constructor() {
-        this.createTeamService = (teamBody) => __awaiter(this, void 0, void 0, function* () {
+    createTeamService(teamBody) {
+        return __awaiter(this, void 0, void 0, function* () {
             //Check if team exists
             const checkTeam = yield (0, teams_repo_1.findTeamByNameAndAbbr)(teamBody);
             if (checkTeam) {
@@ -29,23 +29,36 @@ let TeamService = class TeamService {
             const createTeam = yield (0, teams_repo_1.createTeamRepo)(teamBody);
             return { success: true, data: createTeam };
         });
-        this.findTeamsService = () => __awaiter(this, void 0, void 0, function* () {
+    }
+    ;
+    findTeamsService() {
+        return __awaiter(this, void 0, void 0, function* () {
             const findTeams = yield (0, teams_repo_1.findTeamsRepo)();
             return { success: true, data: findTeams };
         });
-        this.findTeamByIdService = (id) => __awaiter(this, void 0, void 0, function* () {
+    }
+    ;
+    findTeamByIdService(id) {
+        return __awaiter(this, void 0, void 0, function* () {
             const findTeam = yield (0, teams_repo_1.findTeamByIdRepo)(id);
             return { success: true, data: findTeam };
         });
-        this.updateTeamByIdService = (id, teamBody) => __awaiter(this, void 0, void 0, function* () {
+    }
+    ;
+    updateTeamByIdService(id, teamBody) {
+        return __awaiter(this, void 0, void 0, function* () {
             const updateTeam = yield (0, teams_repo_1.updateTeamByIdRepo)(id, teamBody);
             return { success: true, data: updateTeam };
         });
-        this.deleteTeamByIdService = (id) => __awaiter(this, void 0, void 0, function* () {
+    }
+    ;
+    deleteTeamByIdService(id) {
+        return __awaiter(this, void 0, void 0, function* () {
             const deleteFixtures = yield (0, teams_repo_1.deleteTeamByIdRepo)(id);
             return { success: true };
         });
     }
+    ;
 };
 TeamService = __decorate([
     (0, typedi_1.Service)()

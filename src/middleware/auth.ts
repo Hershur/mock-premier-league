@@ -42,7 +42,7 @@ const verifyToken =  (req: express.Request, res: express.Response, next: express
 
         });
 
-                redisClient.quit();
+                
 
         
     } catch (error) {
