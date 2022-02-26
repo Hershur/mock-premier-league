@@ -1,12 +1,13 @@
 import fixturesModel from "../models/fixtures.model";
 import { IFixtures } from "../interfaces/fixtures.interface";
+import { FixtureStatus } from "../enums/fixtureStatus.enum";
 
 export const createFixturesRepo = async (fixturesBody: IFixtures)=> {
 
     const fixtures = new fixturesModel({
         homeTeam: fixturesBody.homeTeam,
         awayTeam: fixturesBody.awayTeam,
-        status: 'pending',
+        status: FixtureStatus.Pending,
         dateTime: fixturesBody.dateTime,
         venue: fixturesBody.venue,
         gameweek: fixturesBody.gameweek,

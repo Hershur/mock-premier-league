@@ -3,7 +3,7 @@
     "info": {
         "version": "1.0.0",
         "title": "Mock Premier League API",
-        "description": "A simple RESTful API that provides a service that allows admin, users register and login. Users can view teams various fixtures (pending or completed)"
+        "description": "A simple RESTful API that provides a service that allows admin, users register and login. Users can view teams, various fixtures (pending or completed)"
     },
     "consumes": [
         "application/json"
@@ -30,6 +30,16 @@
         }
     ],
     "paths": {
+        "/": {
+            "get": {
+                "summary": "Welcome message",
+                "responses": {
+                    "200": {
+                        "description": "A successful response, 'Welcome to express server' displayed"
+                    }
+                }
+            }
+        },
         "/api/users/login": {
             "post": {
                 "tags": [
@@ -60,7 +70,7 @@
                 }
             }
         },
-        "/api/users/create-account": {
+        "/api/users/create": {
             "post": {
                 "tags": [
                     "Users"
@@ -90,94 +100,44 @@
                 }
             }
         },
-        "/": {
-            "get": {
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ],
+        "/api/admin/login": {
+            "post": {
                 "tags": [
-                    "Users"
+                    "Admin"
                 ],
-                "summary": "Welcome message",
-                "responses": {
-                    "200": {
-                        "description": "A successful response, 'Welcome to express server' displayed"
-                    }
-                }
-            }
-        },
-        "/api/users": {
-            "get": {
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ],
-                "tags": [
-                    "Users"
-                ],
-                "summary": "Get all users",
-                "responses": {
-                    "200": {
-                        "description": "A successful response, all users displayed"
-                    }
-                }
-            }
-        },
-        "/api/users/{id}": {
-            "parameters": [
-                {
-                    "name": "id",
-                    "in": "path",
+                "summary": "Login Admin",
+                "requestBody": {
+                    "description": "The route should accept JSON data containing login details",
                     "required": true,
-                    "description": "ID of user",
-                    "type": "string"
-                }
-            ],
-            "get": {
-                "security": [
-                    {
-                        "bearerAuth": []
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/definitions/LoginData"
+                            }
+                        }
                     }
+                },
+                "produces": [
+                    "application/json"
                 ],
-                "tags": [
-                    "Users"
-                ],
-                "summary": "Get a specific user",
                 "responses": {
                     "200": {
-                        "description": "User details is displayed"
+                        "description": "Admin logged in successfully and token generated"
                     },
                     "400": {
-                        "description": "User does not exists"
+                        "description": "Admin does not exists or invalid token"
                     }
                 }
             }
         },
-        "/api/users/{id}/update": {
-            "parameters": [
-                {
-                    "name": "id",
-                    "in": "path",
-                    "required": true,
-                    "description": "ID of user",
-                    "type": "string"
-                }
-            ],
-            "put": {
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ],
+        "/api/admin/create": {
+            "post": {
                 "tags": [
-                    "Users"
+                    "Admin"
                 ],
-                "summary": "Update user details",
+                "summary": "Create admin account",
                 "requestBody": {
-                    "description": "The route should accept JSON data containing user details to update",
+                    "description": "The route should accept JSON data containing user details",
                     "required": true,
                     "content": {
                         "application/json": {
@@ -192,58 +152,312 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "User details is updated successfully"
+                        "description": "Admin account is created successfully and token generated"
                     },
                     "400": {
-                        "description": "User details are invalid"
+                        "description": "Admin details are invalid"
                     }
                 }
             }
         },
-        "/api/users/{id}/delete": {
+        "/api/fixtures/create": {
+            "post": {
+                "tags": [
+                    "Fixtures"
+                ],
+                "summary": "Create a league fixture",
+                "requestBody": {
+                    "description": "The route should accept JSON data containing fixture details",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/definitions/FixtureData"
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Fixture is created successfully and token generated"
+                    },
+                    "400": {
+                        "description": "Fixture details are invalid"
+                    }
+                }
+            }
+        },
+        "/api/fixtures": {
+            "get": {
+                "tags": [
+                    "Fixtures"
+                ],
+                "summary": "Get all fixtures",
+                "responses": {
+                    "200": {
+                        "description": "A successful response, all fixtures displayed"
+                    }
+                }
+            }
+        },
+        "/api/fixtures/{fixtureId}": {
             "parameters": [
                 {
-                    "name": "id",
+                    "name": "fixtureId",
                     "in": "path",
                     "required": true,
-                    "description": "ID of user",
+                    "description": "ID of fixture",
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "tags": [
+                    "Fixtures"
+                ],
+                "summary": "Get a specific fixture",
+                "responses": {
+                    "200": {
+                        "description": "Fixture details is displayed"
+                    },
+                    "400": {
+                        "description": "Fixture does not exists"
+                    }
+                }
+            }
+        },
+        "/api/fixtures/find": {
+            "query": [
+                {
+                    "name": "status",
+                    "in": "path",
+                    "required": true,
+                    "description": "Status of fixture",
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "tags": [
+                    "Fixtures"
+                ],
+                "summary": "Get fixtures by their status",
+                "responses": {
+                    "200": {
+                        "description": "Fixture details is displayed based on status (completed or pending)"
+                    },
+                    "400": {
+                        "description": "Fixture does not exists"
+                    }
+                }
+            }
+        },
+        "/api/fixtures/edit/{fixtureId}": {
+            "parameters": [
+                {
+                    "name": "fixtureId",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID of fixture",
+                    "type": "string"
+                }
+            ],
+            "put": {
+                "tags": [
+                    "Fixtures"
+                ],
+                "summary": "Edit fixture details",
+                "requestBody": {
+                    "description": "The route should accept JSON data containing fixture details to modify",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/definitions/FixtureData"
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Fixture details is updated successfully"
+                    },
+                    "400": {
+                        "description": "Fixture details are invalid"
+                    }
+                }
+            }
+        },
+        "/api/fixtures/remove/{fixtureId}": {
+            "parameters": [
+                {
+                    "name": "fixtureId",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID of fixture",
                     "type": "string"
                 }
             ],
             "delete": {
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ],
                 "tags": [
-                    "Users"
+                    "Fixtures"
                 ],
-                "summary": "Delete a specific user",
+                "summary": "Delete a specific fixture",
                 "responses": {
                     "204": {
-                        "description": "User deleted successfully"
+                        "description": "Fixture deleted successfully"
                     },
                     "400": {
-                        "description": "User does not exists"
+                        "description": "Fixtures does not exists"
                     }
                 }
             }
-        }
-    },
-    "components": {        
-        "securitySchemes": {
-          "bearerAuth": {
-            "type": "http",
-            "scheme": "bearer",
-            "bearerFormat": "JWT"
-          }
+        },
+        "/api/teams/create": {
+            "post": {
+                "tags": [
+                    "Teams"
+                ],
+                "summary": "Create a league team",
+                "requestBody": {
+                    "description": "The route should accept JSON data containing team details",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/definitions/TeamData"
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Team is created successfully and token generated"
+                    },
+                    "400": {
+                        "description": "Team details are invalid"
+                    }
+                }
+            }
+        },
+        "/api/teams": {
+            "get": {
+                "tags": [
+                    "Teams"
+                ],
+                "summary": "Get all league teams",
+                "responses": {
+                    "200": {
+                        "description": "A successful response, all teams displayed"
+                    }
+                }
+            }
+        },
+        "/api/teams/{teamId}": {
+            "parameters": [
+                {
+                    "name": "teamId",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID of team",
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "tags": [
+                    "Teams"
+                ],
+                "summary": "Get a specific team",
+                "responses": {
+                    "200": {
+                        "description": "Team details is displayed"
+                    },
+                    "400": {
+                        "description": "Team does not exists"
+                    }
+                }
+            }
+        },
+        "/api/teams/edit/{teamId}": {
+            "parameters": [
+                {
+                    "name": "teamId",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID of team",
+                    "type": "string"
+                }
+            ],
+            "put": {
+                "tags": [
+                    "Teams"
+                ],
+                "summary": "Edit team details",
+                "requestBody": {
+                    "description": "The route should accept JSON data containing team details to modify",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/definitions/TeamData"
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Team details is updated successfully"
+                    },
+                    "400": {
+                        "description": "Team details are invalid"
+                    }
+                }
+            }
+        },
+        "/api/teams/remove/{teamId}": {
+            "parameters": [
+                {
+                    "name": "teamId",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID of team",
+                    "type": "string"
+                }
+            ],
+            "delete": {
+                "tags": [
+                    "Teams"
+                ],
+                "summary": "Delete a specific team",
+                "responses": {
+                    "204": {
+                        "description": "Team deleted successfully"
+                    },
+                    "400": {
+                        "description": "Team does not exists"
+                    }
+                }
+            }
         }
     },
     "definitions": {
         "UserData": {
             "type": "object",
             "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "assurance femi"
+                },
                 "email": {
                     "type": "string",
                     "example": "assurancefemi@gmail.com"
@@ -269,6 +483,62 @@
                 "password": {
                     "type": "string",
                     "example": "password1"
+                }
+            },
+            "description": "Login details"
+        },
+        "FixtureData": {
+            "type": "object",
+            "properties": {
+                "homeTeam": {
+                    "type": "string",
+                    "example": "Manchester United"
+                },
+                "awayTeam": {
+                    "type": "string",
+                    "example": "Aston Villa"
+                },
+                "dateTime": {
+                    "type": "string",
+                    "example": "01/01/2022"
+                },
+                "venue": {
+                    "type": "string",
+                    "example": "Old Trafford"
+                },
+                "referee": {
+                    "type": "string",
+                    "example": "Paul Tierney"
+                },
+                "gameweek": {
+                    "type": "string",
+                    "example": "GW 35"
+                },
+                "hashTag": {
+                    "type": "string",
+                    "example": "#MUNAVL"
+                }
+            },
+            "description": "Login details"
+        },
+        "TeamData": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "Manchester United"
+                },
+                "nickName": {
+                    "type": "string",
+                    "example": "Red Devils"
+                },
+                "abbrName": {
+                    "type": "string",
+                    "example": "MUN"
+                },
+                "stadium": {
+                    "type": "string",
+                    "example": "Old Trafford"
                 }
             },
             "description": "Login details"
