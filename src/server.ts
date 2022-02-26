@@ -6,16 +6,16 @@ import session from 'express-session';
 import { errors } from 'celebrate';
 import routes from './routes';
 import connectMongoDB from './database/mongodbConnection';
-import { PORT, REDIS_SECRET, NODE_ENV, SESSION_NAME } from './config';
+import { PORT, REDIS_SECRET, COOKIE_SECRET, SESSION_NAME } from './config';
 import { redisClient } from './database/redisConnection';
 import cookieParser from 'cookie-parser';
-
+import { cookieOptions } from './utils';
 
 const app = express();
 
 connectMongoDB();
 
-app.use(cookieParser());
+app.use(cookieParser(COOKIE_SECRET));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -27,16 +27,10 @@ const RedisStore = connectRedis(session);
 
 
 app.use(session({
-  secret: REDIS_SECRET,
+  secret: COOKIE_SECRET,
   name: SESSION_NAME,
-
   store: new RedisStore({ client: redisClient, disableTouch: true}),
-  cookie: {
-    maxAge: 1000 * 60 * 2, //2 minutes
-    sameSite: true, 
-    httpOnly: true,
-    secure: NODE_ENV === "production"
-  },
+  cookie: cookieOptions,
   rolling: true,
   saveUninitialized: false,
   resave: false
@@ -57,3 +51,4 @@ app.use((err: express.ErrorRequestHandler, req: express.Request, res: express.Re
 app.use(errors());
 
 app.listen(PORT, () => console.log(`Running on port ${PORT}`));
+

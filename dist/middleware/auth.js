@@ -9,7 +9,7 @@ const config_1 = require("../config");
 const redisConnection_1 = require("../database/redisConnection");
 const verifyToken = (req, res, next) => {
     try {
-        const { userEmail } = req.cookies;
+        const { userEmail } = req.signedCookies;
         redisConnection_1.redisClient.get(userEmail, (err, data) => {
             if (err) {
                 return res.status(403).json({

@@ -14,11 +14,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteFixturesByIdRepo = exports.updateFixturesByIdRepo = exports.findFixturesByStatusRepo = exports.findFixturesByIdRepo = exports.findFixturesRepo = exports.createFixturesRepo = void 0;
 const fixtures_model_1 = __importDefault(require("../models/fixtures.model"));
+const fixtureStatus_enum_1 = require("../enums/fixtureStatus.enum");
 const createFixturesRepo = (fixturesBody) => __awaiter(void 0, void 0, void 0, function* () {
     const fixtures = new fixtures_model_1.default({
         homeTeam: fixturesBody.homeTeam,
         awayTeam: fixturesBody.awayTeam,
-        status: 'pending',
+        status: fixtureStatus_enum_1.FixtureStatus.Pending,
         dateTime: fixturesBody.dateTime,
         venue: fixturesBody.venue,
         gameweek: fixturesBody.gameweek,

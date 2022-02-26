@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SESSION_NAME = exports.REDIS_SECRET = exports.REDIS_HOST_PORT = exports.REDIS_HOST = exports.REDIS_PASSWORD = exports.MONGO_URI = exports.PORT = exports.TOKEN_EXPIRY = exports.TOKEN_KEY = exports.NODE_ENV = void 0;
+exports.COOKIE_SECRET = exports.SESSION_NAME = exports.REDIS_SECRET = exports.REDIS_HOST_PORT = exports.REDIS_HOST = exports.REDIS_PASSWORD = exports.MONGO_URI = exports.PORT = exports.TOKEN_EXPIRY = exports.TOKEN_KEY = exports.NODE_ENV = void 0;
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const NODE_ENV = process.env.NODE_ENV === 'development' ? 'development' : 'production';
@@ -26,4 +26,6 @@ const REDIS_HOST_PORT = Number(process.env.REDIS_HOST_PORT);
 exports.REDIS_HOST_PORT = REDIS_HOST_PORT;
 const SESSION_NAME = process.env.SESSION_NAME;
 exports.SESSION_NAME = SESSION_NAME;
+const COOKIE_SECRET = process.env.COOKIE_SECRET;
+exports.COOKIE_SECRET = COOKIE_SECRET;
 //# sourceMappingURL=index.js.map

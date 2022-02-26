@@ -14,7 +14,7 @@ const swaggerData = fs.readFileSync(swaggerFile, 'utf8');
 // const customCss = fs.readFileSync((process.cwd()+"/swagger/swagger.css"), 'utf8');
 const swaggerDocument = JSON.parse(swaggerData);
 /* Swagger files end */
-console.log(process.cwd());
+
 
 const router = express.Router();
 

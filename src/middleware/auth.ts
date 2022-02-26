@@ -8,9 +8,8 @@ import { redisClient } from "../database/redisConnection";
 
 const verifyToken =  (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
-        const { userEmail } = req.cookies;
+        const { userEmail } = req.signedCookies;
     
-
         redisClient.get(userEmail, (err, data)=> {            
             if(err) {
                 return res.status(403).json({

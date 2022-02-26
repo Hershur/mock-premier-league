@@ -12,6 +12,7 @@ const REDIS_HOST = process.env.REDIS_HOST;
 const REDIS_SECRET = process.env.REDIS_SECRET;
 const REDIS_HOST_PORT = Number(process.env.REDIS_HOST_PORT);
 const SESSION_NAME = process.env.SESSION_NAME;
+const COOKIE_SECRET = process.env.COOKIE_SECRET;
 
 
 export {
@@ -24,5 +25,6 @@ export {
     REDIS_HOST,
     REDIS_HOST_PORT,
     REDIS_SECRET,
-    SESSION_NAME
+    SESSION_NAME,
+    COOKIE_SECRET
 }

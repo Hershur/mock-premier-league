@@ -44,6 +44,7 @@ require("reflect-metadata");
 const users_services_1 = __importDefault(require("../services/users.services"));
 const typedi_1 = __importStar(require("typedi"));
 const config_1 = require("../config");
+const utils_1 = require("../utils");
 let UserController = class UserController {
     createUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -62,7 +63,7 @@ let UserController = class UserController {
             try {
                 const loginDTO = req.body;
                 const loginUser = yield this._userService.loginUserService(loginDTO);
-                res.cookie("userEmail", loginUser.data.email);
+                res.cookie("userEmail", loginUser.data.email, utils_1.cookieOptions);
                 return res.status(200).json(loginUser);
             }
             catch (error) {

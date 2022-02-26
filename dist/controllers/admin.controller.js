@@ -43,6 +43,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 require("reflect-metadata");
 const typedi_1 = __importStar(require("typedi"));
 const admin_services_1 = __importDefault(require("../services/admin.services"));
+const utils_1 = require("../utils");
 let AdminController = class AdminController {
     createAdmin(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -61,7 +62,7 @@ let AdminController = class AdminController {
             try {
                 const loginDTO = req.body;
                 const loginAdmin = yield this._adminService.loginAdminService(loginDTO);
-                res.cookie("userEmail", loginAdmin.data.email);
+                res.cookie("userEmail", loginAdmin.data.email, utils_1.cookieOptions);
                 return res.status(200).json(loginAdmin);
             }
             catch (error) {

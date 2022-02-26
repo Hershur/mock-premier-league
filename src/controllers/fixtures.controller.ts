@@ -13,7 +13,6 @@ class FixtureController {
             const fixtureDTO = req.body as unknown as IFixtures;
             const createFixture = await this._fixtureService.createFixturesService(fixtureDTO);
             
-            console.log("Creating", createFixture);
 
             return res.status(201).json(createFixture);
         } catch (error) {

@@ -49,7 +49,6 @@ let FixtureController = class FixtureController {
             try {
                 const fixtureDTO = req.body;
                 const createFixture = yield this._fixtureService.createFixturesService(fixtureDTO);
-                console.log("Creating", createFixture);
                 return res.status(201).json(createFixture);
             }
             catch (error) {
