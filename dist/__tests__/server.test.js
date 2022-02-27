@@ -14,6 +14,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const app_1 = __importDefault(require("../app"));
 const supertest_1 = __importDefault(require("supertest"));
+const redisConnection_1 = require("../database/redisConnection");
+afterAll(() => {
+    (0, redisConnection_1.close)();
+});
 describe('test default route', () => {
     it('should return a welcome message', () => __awaiter(void 0, void 0, void 0, function* () {
         const res = yield (0, supertest_1.default)(app_1.default).get('/');

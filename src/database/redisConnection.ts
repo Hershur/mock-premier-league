@@ -13,10 +13,19 @@ const redisClient =  new Redis({
     });
 
 redisClient.on('error', (err) => {
-    console.log(err);
+    redisClient.disconnect(false);
 });
 
-export { redisClient };
+
+const close = async () => {
+    await new Promise<void>((resolve)=> {
+        redisClient.quit(()=> resolve());
+    });
+
+    await new Promise((resolve)=> setImmediate(resolve));
+}
+
+export { redisClient, close };
 
 
 

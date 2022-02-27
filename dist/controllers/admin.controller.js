@@ -62,7 +62,9 @@ let AdminController = class AdminController {
             try {
                 const loginDTO = req.body;
                 const loginAdmin = yield this._adminService.loginAdminService(loginDTO);
-                res.cookie("userEmail", loginAdmin.data.email, utils_1.cookieOptions);
+                if (loginAdmin.data) {
+                    res.cookie("userEmail", loginAdmin.data.email, utils_1.cookieOptions);
+                }
                 return res.status(200).json(loginAdmin);
             }
             catch (error) {

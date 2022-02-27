@@ -63,7 +63,9 @@ let UserController = class UserController {
             try {
                 const loginDTO = req.body;
                 const loginUser = yield this._userService.loginUserService(loginDTO);
-                res.cookie("userEmail", loginUser.data.email, utils_1.cookieOptions);
+                if (loginUser.data) {
+                    res.cookie("userEmail", loginUser.data.email, utils_1.cookieOptions);
+                }
                 return res.status(200).json(loginUser);
             }
             catch (error) {

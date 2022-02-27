@@ -14,65 +14,65 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const app_1 = __importDefault(require("../app"));
 const supertest_1 = __importDefault(require("supertest"));
-const admin_services_1 = __importDefault(require("../services/admin.services"));
+const users_services_1 = __importDefault(require("../services/users.services"));
 const redisConnection_1 = require("../database/redisConnection");
-describe('test Admin routes', () => {
-    const adminCreated = {
+describe('test User routes', () => {
+    const userCreated = {
         name: "Assurance Femi",
         email: "user2@gmail.com",
         password: "Tester1234!",
         confirmPassword: "Tester1234!"
     };
-    const adminUser = {
+    const user = {
         name: "Assurance Femi",
-        email: "admin@gmail.com",
+        email: "user2@gmail.com",
     };
-    describe('test create admin route', () => {
+    describe('test create user route', () => {
         const invalidUser = {
             email: "user2@gmail.com",
             password: "Tester1234!",
             confirmPassword: "Tester1234!"
         };
-        it('should return an object with success and data details of admin user if successfully created', () => __awaiter(void 0, void 0, void 0, function* () {
-            const mockCreateAdmin = jest.fn(() => ({ success: true, data: adminCreated }));
+        it('should return an object with success and data details of user if successfully created', () => __awaiter(void 0, void 0, void 0, function* () {
+            const mockCreateUser = jest.fn(() => ({ success: true, data: userCreated }));
             jest
-                .spyOn(admin_services_1.default.prototype, "createAdminAccountService")
-                .mockImplementation(() => __awaiter(void 0, void 0, void 0, function* () { return mockCreateAdmin(); }));
-            const res = yield (0, supertest_1.default)(app_1.default).post('/api/admin/create').send(adminCreated);
+                .spyOn(users_services_1.default.prototype, "createUserAccountService")
+                .mockImplementation(() => __awaiter(void 0, void 0, void 0, function* () { return mockCreateUser(); }));
+            const res = yield (0, supertest_1.default)(app_1.default).post('/api/users/create').send(userCreated);
             expect(res.body).toHaveProperty("data");
             expect(res.body.success).toBe(true);
-            expect(res.body.data.name).toBe(adminCreated.name);
+            expect(res.body.data.name).toBe(userCreated.name);
         }));
         it('should return an invalid parameters error if the required fields are missing', () => __awaiter(void 0, void 0, void 0, function* () {
             var _a, _b, _c;
-            const mockCreateAdmin = jest.fn(() => ({ success: true, data: adminCreated }));
+            const mockCreateUser = jest.fn(() => ({ success: true, data: userCreated }));
             jest
-                .spyOn(admin_services_1.default.prototype, "createAdminAccountService")
-                .mockImplementation(() => __awaiter(void 0, void 0, void 0, function* () { return mockCreateAdmin(); }));
-            const res = yield (0, supertest_1.default)(app_1.default).post('/api/admin/create').send(invalidUser);
+                .spyOn(users_services_1.default.prototype, "createUserAccountService")
+                .mockImplementation(() => __awaiter(void 0, void 0, void 0, function* () { return mockCreateUser(); }));
+            const res = yield (0, supertest_1.default)(app_1.default).post('/api/users/create').send(invalidUser);
             expect((_a = res.body) === null || _a === void 0 ? void 0 : _a.success).toBeUndefined();
             expect((_c = (_b = res.body) === null || _b === void 0 ? void 0 : _b.data) === null || _c === void 0 ? void 0 : _c.name).toBeUndefined();
         }));
     });
-    describe('test admin login route', () => {
-        const adminLogin = {
-            email: "admin@gmail.com",
+    describe('test user login route', () => {
+        const userLogin = {
+            email: "user2@gmail.com",
             password: "Tester1234!"
         };
-        const invalidAdminLogin = {
+        const invalidUserLogin = {
             email: "user@gmail.com",
             password: "Tester1234!"
         };
-        it('should return an object with success and data details of admin user if logged in created', () => __awaiter(void 0, void 0, void 0, function* () {
-            const mockLoginAdmin = jest.fn(() => ({ success: true, data: adminUser }));
+        it('should return an object with success and data details of  user if logged in created', () => __awaiter(void 0, void 0, void 0, function* () {
+            const mockLoginUser = jest.fn(() => ({ success: true, data: user }));
             jest
-                .spyOn(admin_services_1.default.prototype, "loginAdminService")
-                .mockImplementation(() => __awaiter(void 0, void 0, void 0, function* () { return mockLoginAdmin(); }));
-            const res = yield (0, supertest_1.default)(app_1.default).post('/api/admin/login').send(adminLogin);
+                .spyOn(users_services_1.default.prototype, "loginUserService")
+                .mockImplementation(() => __awaiter(void 0, void 0, void 0, function* () { return mockLoginUser(); }));
+            const res = yield (0, supertest_1.default)(app_1.default).post('/api/users/login').send(userLogin);
             expect(res.body).toHaveProperty("data");
             expect(res.body.success).toBe(true);
-            expect(res.body.data.name).toBe(adminUser.name);
-            expect(res.body.data.email).toBe(adminUser.email);
+            expect(res.body.data.name).toBe(user.name);
+            expect(res.body.data.email).toBe(user.email);
         }));
     });
 });
@@ -80,4 +80,4 @@ describe('test Admin routes', () => {
 afterAll(() => {
     (0, redisConnection_1.close)();
 });
-//# sourceMappingURL=admin.routes.test.js.map
+//# sourceMappingURL=users.routes.test.js.map
