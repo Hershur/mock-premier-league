@@ -25,7 +25,7 @@ const redisClient = new ioredis_1.default({
 });
 exports.redisClient = redisClient;
 redisClient.on('error', (err) => {
-    redisClient.disconnect(false);
+    // redisClient.disconnect(false);
 });
 const close = () => __awaiter(void 0, void 0, void 0, function* () {
     yield new Promise((resolve) => {

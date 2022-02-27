@@ -6,6 +6,7 @@ import teamsRouter from './routes/teams.routes';
 import usersRouter from './routes/users.routes';
 import swaggerUi = require('swagger-ui-express');
 import fs = require('fs');
+import { rateLimiter } from './middleware/rateLimiter';
 
 
 /* Swagger files start */
@@ -28,10 +29,10 @@ router.use('/admin', adminRouter);
 //JWT Authentication middleware
 router.use(verifyToken);
 
-router.use('/teams', teamsRouter);
+router.use('/teams', rateLimiter, teamsRouter);
 
 
-router.use('/fixtures', fixturesRouter);
+router.use('/fixtures', rateLimiter, fixturesRouter);
 
 
 export default router;

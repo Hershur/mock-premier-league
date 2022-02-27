@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.COOKIE_SECRET = exports.SESSION_NAME = exports.REDIS_SECRET = exports.REDIS_HOST_PORT = exports.REDIS_HOST = exports.REDIS_PASSWORD = exports.MONGO_URI = exports.PORT = exports.TOKEN_EXPIRY = exports.TOKEN_KEY = exports.NODE_ENV = void 0;
+exports.NO_OF_ATTEMPTS_ALLOWED_TIME = exports.RATE_LIMIT_ALLOWED_TIME = exports.COOKIE_SECRET = exports.SESSION_NAME = exports.REDIS_SECRET = exports.REDIS_HOST_PORT = exports.REDIS_HOST = exports.REDIS_PASSWORD = exports.MONGO_URI = exports.PORT = exports.TOKEN_EXPIRY = exports.TOKEN_KEY = exports.NODE_ENV = void 0;
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const NODE_ENV = process.env.NODE_ENV === 'development' ? 'development' : 'production';
@@ -28,4 +28,8 @@ const SESSION_NAME = process.env.SESSION_NAME;
 exports.SESSION_NAME = SESSION_NAME;
 const COOKIE_SECRET = process.env.COOKIE_SECRET;
 exports.COOKIE_SECRET = COOKIE_SECRET;
+const RATE_LIMIT_ALLOWED_TIME = Number(process.env.RATE_LIMIT_ALLOWED_TIME);
+exports.RATE_LIMIT_ALLOWED_TIME = RATE_LIMIT_ALLOWED_TIME;
+const NO_OF_ATTEMPTS_ALLOWED_TIME = Number(process.env.NO_OF_ATTEMPTS_ALLOWED_TIME);
+exports.NO_OF_ATTEMPTS_ALLOWED_TIME = NO_OF_ATTEMPTS_ALLOWED_TIME;
 //# sourceMappingURL=index.js.map

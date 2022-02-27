@@ -13,7 +13,7 @@ const redisClient =  new Redis({
     });
 
 redisClient.on('error', (err) => {
-    redisClient.disconnect(false);
+    // redisClient.disconnect(false);
 });
 
 

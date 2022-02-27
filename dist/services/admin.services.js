@@ -35,7 +35,7 @@ let AdminAccountService = class AdminAccountService {
                 return { success: false, message: "Admin already exists" };
             }
             //Hash Password
-            const hashedPassword = (0, utils_1.generateHashedPassword)(adminBody.password);
+            const hashedPassword = yield (0, utils_1.generateHashedPassword)(adminBody.password);
             const admin = Object.assign(Object.assign({}, adminBody), { hashedPassword });
             const createAdmin = yield (0, admin_repo_1.createAdminAccountRepo)(admin);
             return { success: true, data: createAdmin };
@@ -44,7 +44,7 @@ let AdminAccountService = class AdminAccountService {
     loginAdminService(loginBody) {
         return __awaiter(this, void 0, void 0, function* () {
             const adminLogin = yield (0, admin_repo_1.loginAdminRepo)(loginBody);
-            const checkPassword = bcrypt_1.default.compareSync(loginBody.password, adminLogin.password);
+            const checkPassword = yield bcrypt_1.default.compare(loginBody.password, adminLogin.password);
             if (!checkPassword)
                 return { success: false, message: "Incorrect username or password" };
             const token = jsonwebtoken_1.default.sign({ user_id: adminLogin._id, email: adminLogin.email, isAdmin: true }, config_1.TOKEN_KEY, {

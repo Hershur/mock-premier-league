@@ -22,7 +22,7 @@ export default class AdminAccountService {
         }
     
         //Hash Password
-        const hashedPassword = generateHashedPassword(adminBody.password);
+        const hashedPassword = await generateHashedPassword(adminBody.password);
         const admin = {...adminBody, hashedPassword};
     
         const createAdmin = await createAdminAccountRepo(admin);
@@ -31,7 +31,7 @@ export default class AdminAccountService {
 
     async loginAdminService (loginBody: ILogin): Promise<ServiceResponse>{
         const adminLogin = await loginAdminRepo(loginBody);
-        const checkPassword =  bcrypt.compareSync(loginBody.password, adminLogin.password);
+        const checkPassword = await  bcrypt.compare(loginBody.password, adminLogin.password);
 
         if(!checkPassword) return {success: false, message: "Incorrect username or password"};
 

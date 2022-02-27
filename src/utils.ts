@@ -2,9 +2,9 @@ import bcrypt from "bcrypt";
 import { NODE_ENV, COOKIE_SECRET, TOKEN_EXPIRY } from './config';
 
 
-export const generateHashedPassword = (password: string): string => {
-    const salt = bcrypt.genSaltSync(10);
-    const hashedPassword = bcrypt.hashSync(password, salt);
+export const generateHashedPassword = async (password: string): Promise<string> => {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
     return hashedPassword;
 }
 

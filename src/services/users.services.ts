@@ -22,7 +22,7 @@ export default class UserAccountService {
         }
     
         //Hash Password
-        const hashedPassword = generateHashedPassword(userBody.password);
+        const hashedPassword = await generateHashedPassword(userBody.password);
         const user = {...userBody, hashedPassword};
     
         const createUser = await createUserAccountRepo(user);
@@ -32,7 +32,8 @@ export default class UserAccountService {
 
     async loginUserService(loginBody: ILogin): Promise<ServiceResponse> {
         const userLogin = await loginUserRepo(loginBody);
-        const checkPassword =  bcrypt.compareSync(loginBody.password, userLogin.password);
+        
+        const checkPassword = await bcrypt.compare(loginBody.password, userLogin.password);
 
         if(!checkPassword) return {success: false, message: "Incorrect username or password"};
 

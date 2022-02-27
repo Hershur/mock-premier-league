@@ -35,7 +35,7 @@ let UserAccountService = class UserAccountService {
                 return { success: false, message: "User already exists" };
             }
             //Hash Password
-            const hashedPassword = (0, utils_1.generateHashedPassword)(userBody.password);
+            const hashedPassword = yield (0, utils_1.generateHashedPassword)(userBody.password);
             const user = Object.assign(Object.assign({}, userBody), { hashedPassword });
             const createUser = yield (0, users_repo_1.createUserAccountRepo)(user);
             return { success: true, data: createUser };
@@ -44,7 +44,7 @@ let UserAccountService = class UserAccountService {
     loginUserService(loginBody) {
         return __awaiter(this, void 0, void 0, function* () {
             const userLogin = yield (0, users_repo_1.loginUserRepo)(loginBody);
-            const checkPassword = bcrypt_1.default.compareSync(loginBody.password, userLogin.password);
+            const checkPassword = yield bcrypt_1.default.compare(loginBody.password, userLogin.password);
             if (!checkPassword)
                 return { success: false, message: "Incorrect username or password" };
             const token = jsonwebtoken_1.default.sign({ user_id: userLogin._id, email: userLogin.email }, config_1.TOKEN_KEY, {

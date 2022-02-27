@@ -13,6 +13,8 @@ const REDIS_SECRET = process.env.REDIS_SECRET;
 const REDIS_HOST_PORT = Number(process.env.REDIS_HOST_PORT);
 const SESSION_NAME = process.env.SESSION_NAME;
 const COOKIE_SECRET = process.env.COOKIE_SECRET;
+const RATE_LIMIT_ALLOWED_TIME = Number(process.env.RATE_LIMIT_ALLOWED_TIME);
+const NO_OF_ATTEMPTS_ALLOWED_TIME = Number(process.env.NO_OF_ATTEMPTS_ALLOWED_TIME);
 
 
 export {
@@ -26,5 +28,7 @@ export {
     REDIS_HOST_PORT,
     REDIS_SECRET,
     SESSION_NAME,
-    COOKIE_SECRET
+    COOKIE_SECRET,
+    RATE_LIMIT_ALLOWED_TIME,
+    NO_OF_ATTEMPTS_ALLOWED_TIME
 }

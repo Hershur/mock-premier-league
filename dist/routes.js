@@ -11,6 +11,7 @@ const teams_routes_1 = __importDefault(require("./routes/teams.routes"));
 const users_routes_1 = __importDefault(require("./routes/users.routes"));
 const swaggerUi = require("swagger-ui-express");
 const fs = require("fs");
+const rateLimiter_1 = require("./middleware/rateLimiter");
 /* Swagger files start */
 const swaggerFile = (process.cwd() + "/swagger.json");
 const swaggerData = fs.readFileSync(swaggerFile, 'utf8');
@@ -24,7 +25,7 @@ router.use('/admin', admin_routes_1.default);
 //Protected routes
 //JWT Authentication middleware
 router.use(auth_1.default);
-router.use('/teams', teams_routes_1.default);
-router.use('/fixtures', fixtures_routes_1.default);
+router.use('/teams', rateLimiter_1.rateLimiter, teams_routes_1.default);
+router.use('/fixtures', rateLimiter_1.rateLimiter, fixtures_routes_1.default);
 exports.default = router;
 //# sourceMappingURL=routes.js.map
