@@ -9,28 +9,37 @@ export const cache = (duration: number) => {
         let key = '__express__' + req.originalUrl || req.url;
         let hashKey = Buffer.from(`${key}`).toString("base64");
 
-        redisClient.hget(hashKey, key, function (err, cachedBody){
-            if (err) {console.log(err);}
-
-            if (cachedBody) {
-                const parseBody = JSON.parse(cachedBody);
-                console.log(parseBody);
-                res.send(parseBody);
-                return
+        redisClient.hgetall(hashKey)
+        .then((result) => {
+            if (key in result) {
+                // console.log((result[key])); 
+                // const parseBody = JSON.parse(JSON.stringify(res[key]));
+                // console.log(parseBody);
+                res.send(JSON.parse(result[key]));
+                return;
             } else {
+                console.log('flused')
                 let oldJSON = res.json;
                 res.json = function(data) {
-                    console.log(data);
-
+                    // console.log(data);
+    
                     //Cache data in redis 
                     redisClient.hset(hashKey, key, JSON.stringify(data));
-
+    
                     res.json = oldJSON; 
                     return res.json(data);
                 }
-
+    
                 next();
             }
+            
+        })
+        .catch(err => console.log(err));
+       
+
+        redisClient.hmget(hashKey, key, function (err, cachedBody){
+            if (err) {console.log(err);}
+
         });
         
     }
