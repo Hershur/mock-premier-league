@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.cookieOptions = exports.adminRoutes = exports.generateHashedPassword = void 0;
+exports.redisOptions = exports.cookieOptions = exports.adminRoutes = exports.generateHashedPassword = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const config_1 = require("./config");
 const generateHashedPassword = (password) => __awaiter(void 0, void 0, void 0, function* () {
@@ -29,5 +29,13 @@ exports.cookieOptions = {
     secure: config_1.NODE_ENV === "production",
     secret: config_1.COOKIE_SECRET,
     signed: true
+};
+exports.redisOptions = {
+    host: config_1.REDIS_HOST,
+    port: config_1.REDIS_HOST_PORT,
+    password: config_1.REDIS_PASSWORD,
+    retryStrategy: function (_) {
+        return undefined;
+    }
 };
 //# sourceMappingURL=utils.js.map

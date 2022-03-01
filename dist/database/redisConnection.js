@@ -14,18 +14,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.close = exports.redisClient = void 0;
 const ioredis_1 = __importDefault(require("ioredis"));
-const config_1 = require("../config");
-const redisClient = new ioredis_1.default({
-    host: config_1.REDIS_HOST,
-    port: config_1.REDIS_HOST_PORT,
-    password: config_1.REDIS_PASSWORD,
-    retryStrategy: function (options) {
-        return undefined;
-    }
-});
+const utils_1 = require("../utils");
+const redisClient = new ioredis_1.default(utils_1.redisOptions);
 exports.redisClient = redisClient;
+redisClient.on('connect', () => {
+    console.log('redisClient connected to redis...');
+});
+redisClient.on('ready', () => {
+    console.log('redisClient connected to redis and ready to use...');
+});
 redisClient.on('error', (err) => {
-    // redisClient.disconnect(false);
+    console.log(err.message);
+});
+redisClient.on('end', () => {
+    console.log('redisClient disconnected from redis');
+});
+process.on('SIGINT', () => {
+    redisClient.quit();
 });
 const close = () => __awaiter(void 0, void 0, void 0, function* () {
     yield new Promise((resolve) => {

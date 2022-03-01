@@ -1,20 +1,31 @@
 import Redis from 'ioredis';
 import connectRedis from 'connect-redis';
 import { REDIS_HOST, REDIS_HOST_PORT, REDIS_PASSWORD } from '../config';
+import { redisOptions } from '../utils';
 
 
-const redisClient =  new Redis({ 
-        host: REDIS_HOST, 
-        port: REDIS_HOST_PORT, 
-        password: REDIS_PASSWORD,
-        retryStrategy: function (options){
-            return undefined;
-        }
-    });
+const redisClient =  new Redis(redisOptions);
+
+
+redisClient.on('connect', () => {
+    console.log('redisClient connected to redis...');
+})
+
+redisClient.on('ready', () => {
+    console.log('redisClient connected to redis and ready to use...');
+})
 
 redisClient.on('error', (err) => {
-    // redisClient.disconnect(false);
-});
+    console.log(err.message);
+})
+
+redisClient.on('end', () => {
+    console.log('redisClient disconnected from redis');
+})
+
+process.on('SIGINT', () => {
+    redisClient.quit();
+})
 
 
 const close = async () => {
